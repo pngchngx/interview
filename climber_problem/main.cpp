@@ -2,11 +2,15 @@
 #include <assert.h>
 #include <cstdlib>
 #include <iostream>
+#include <string>
+#include <cctype>
+#include <string.h>
+using  std::string;
+
 
 #define H_ARRAYSIZE(a) \
     ((sizeof(a) / sizeof(*(a))) / \
     static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
-
 
 struct Mountain
 {
@@ -15,16 +19,53 @@ struct Mountain
 	int mHeight;
 };
 
+
+//void strToMountainArray(Mountain *&mountainArray, const char *str)
+//{
+//	int mIndex = 0;
+//	for (size_t i = 0; str[i] != '\0'; ++i)
+//	{
+//		if (str[i] == '\n' && str[i + 1] != '\0')
+//		{
+//			mountainArray[mIndex].mBegin = str[i + 1] - '0';
+//			mountainArray[mIndex].mEnd = str[i + 3] - '0';
+//			mountainArray[mIndex].mHeight = str[i + 5] - '0';
+//			++mIndex;
+//		}
+//	}
+//}
 void strToMountainArray(Mountain *&mountainArray, const char *str)
 {
-	int mIndex = 0;
-	for (size_t i = 0; str[i] != '\0'; ++i)
+	size_t mIndex = 0;
+	string s = "";
+	int commaCount = 0;
+	size_t strLength = strlen(str);
+	for (size_t i = 0; i != strLength+1; ++i)
 	{
-		if (str[i] == '\n' && str[i + 1] != '\0')
+		if (i != 0 && isdigit(str[i]))
 		{
-			mountainArray[mIndex].mBegin = str[i + 1] - '0';
-			mountainArray[mIndex].mEnd = str[i + 3] - '0';
-			mountainArray[mIndex].mHeight = str[i + 5] - '0';
+			s += str[i];
+			continue;
+		}
+		if (str[i] == ',' && commaCount == 0)
+		{
+			mountainArray[mIndex].mBegin = atoi(s.c_str());
+			++commaCount;
+			s = "";
+			continue;
+		}
+		if (str[i] == ',' && commaCount == 1)
+		{
+			mountainArray[mIndex].mEnd = atoi(s.c_str());
+			++commaCount;
+			s = "";
+			continue;
+		}
+		if ((str[i] == '\n' || str[i] == '\0') && commaCount == 2)
+		{
+			mountainArray[mIndex].mHeight = atoi(s.c_str());
+			commaCount = 0;
+			s = "";
 			++mIndex;
 		}
 	}
@@ -50,6 +91,7 @@ int vertical_walks(Mountain *&mountainArray, size_t mCount)
 		}
 	}
 	notoverlaps += 2 * (mountainArray[mCount - 1].mHeight);
+	//return notoverlaps;
 	return notoverlaps - overlaps;
 }
 
@@ -64,12 +106,10 @@ int resolve(const char* input)
 
 	Mountain *mountainArray = new Mountain[mCount];
 	
-
 	strToMountainArray(mountainArray, input);
 	int hWalks = horizontal_walks(mountainArray, mCount);
 	int vWalks = vertical_walks(mountainArray, mCount);
 	int totalWalks = hWalks + vWalks;
-
 
 	delete[] mountainArray;
 	mountainArray = NULL;
@@ -91,14 +131,19 @@ int main(int argc, char* argv[])
 		"3\n0,1,1\n2,4,3\n3,5,1",
 		"4\n0,1,1\n2,4,3\n3,5,1\n5,6,1",
 		"5\n0,1,1\n2,4,3\n3,5,1\n5,6,1\n6,8,3",
+		"",
+		"\0",
+		"0\n",
+		"7\n0,1,1\n2,4,3\n3,5,1\n5,6,1\n6,8,3\n7,10,2\n9,12,3",
 		//TODO please add more test case here
 	};
-	int expectedSteps[] = { 25, 4, 7, 10, 14, 15, 3, 12, 13, 14, 20 };
+	int expectedSteps[] = { 25, 4, 7, 10, 14, 15, 3, 12, 13, 14, 20, 0, 0, 0, 26 };
 	for (size_t i = 0; i < H_ARRAYSIZE(input); ++i)
 	{
 		assert(resolve(input[i]) == expectedSteps[i]);
 		//std::cout << resolve(input[i]) << ' ';
 	}
 	//std::cout << std::endl;
+	
 	return 0;
 }
