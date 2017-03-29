@@ -1,0 +1,21 @@
+compile failed:
+
+
+calhost vector]$ make
+g++ -g -c -D_DEBUG -fPIC -Wshadow -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Winvalid-pch -fms-extensions -Wall -MMD -g -c -D_DEBUG -fPIC -Wshadow -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Winvalid-pch -fms-extensions -Wall -MMD -Woverloaded-virtual -Wsign-promo -fno-gnu-keywords  main.cpp -o main.o
+g++ -g -c -D_DEBUG -fPIC -Wshadow -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Winvalid-pch -fms-extensions -Wall -MMD -g -c -D_DEBUG -fPIC -Wshadow -Wcast-qual -Wcast-align -Wwrite-strings -Wsign-compare -Winvalid-pch -fms-extensions -Wall -MMD -Woverloaded-virtual -Wsign-promo -fno-gnu-keywords  qh_vector.cpp -o qh_vector.o
+In file included from qh_vector.cpp:2:
+qh_vector.h:12: 错误：expected ‘)’ before ‘n’
+qh_vector.cpp:80: 错误：expected ‘}’ at end of input
+In file included from qh_vector.cpp:2:
+qh_vector.h: In constructor ‘qh::vector<T>::vector()’:
+qh_vector.h:10: 错误：类‘qh::vector<T>’没有名为‘data_’的字段
+qh_vector.h:10: 错误：‘NULL’在此作用域中尚未声明
+qh_vector.h:10: 错误：类‘qh::vector<T>’没有名为‘size_’的字段
+qh_vector.h:10: 错误：类‘qh::vector<T>’没有名为‘capacity_’的字段
+qh_vector.h: At global scope:
+qh_vector.h:10: 错误：expected unqualified-id at end of input
+qh_vector.h:10: 错误：expected ‘}’ at end of input
+make: *** [qh_vector.o] 错误 1
+[cx@localhost vector]$ 
+
